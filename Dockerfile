@@ -1,6 +1,6 @@
 FROM phusion/baseimage:latest
 
-MAINTAINER Jonas Strassel <jo.strassel@gmail.com>
+MAINTAINER Mahyuddin <mahyuddin@kodekreatif.co.id>
 
 ENV HOME /root
 
@@ -11,14 +11,30 @@ ENV DB_PROTOCOL unix
 ENV DB_DRIVER mysqli
 ENV HORDE_TEST_DISABLE false
 
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get update
-RUN apt-get install -y apache2 libapache2-mod-php mysql-client gnupg2 openssl php-pear \
-	php-horde php-horde-imp php-horde-groupware php-horde-ingo php-horde-lz4 \
-	php-imagick php-dev php-memcache php-memcached php-net-sieve && \
+RUN apt-get upgrade -y
+RUN apt-get install -y \
+      apache2 \
+      libapache2-mod-php \
+      mysql-client \
+      gnupg2 \
+      openssl \
+      php-pear \
+      php-horde \
+      php-horde-imp \
+      php-horde-groupware \
+      php-horde-ingo \
+      php-horde-lz4 \
+      php-imagick \
+      php-dev \
+      php-memcache \
+      php-memcached \
+      php-net-sieve \ 
+      python3.5 && \
 	apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pear upgrade PEAR && \
-	pear install Net_DNS2 && \
+RUN pear install Net_DNS2 && \
 	pecl install lzf && \
 	rm -rf /tmp/* /var/tmp/*
 
